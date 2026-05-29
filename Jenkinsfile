@@ -4,15 +4,14 @@ pipeline {
     environment {
         // Customize these variables according to your environment
         DOCKER_REGISTRY = 'docker.io'
-        DOCKER_IMAGE    = 'aurix-ai/video-assistant'
+        DOCKER_IMAGE    = 'shubhamkr371docker/aurix-ai'
         IMAGE_TAG       = "${env.BUILD_NUMBER}"
         DOCKER_CRED_ID  = 'docker-hub-credentials'
     }
 
     parameters {
-        choice(name: 'DEPLOY_ENV', choices: ['dev', 'staging', 'production'], description: 'Target environment for deployment')
         booleanParam(name: 'RUN_LINTER', defaultValue: true, description: 'Check to run flake8/bandit code checks')
-        booleanParam(name: 'PUSH_IMAGE', defaultValue: false, description: 'Check to push the built image to Docker Registry')
+        booleanParam(name: 'PUSH_IMAGE', defaultValue: true, description: 'Check to push the built image to Docker Registry')
     }
 
     stages {
@@ -129,28 +128,6 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    echo "Deploying to target environment: ${params.DEPLOY_ENV}..."
-                    if (params.DEPLOY_ENV == 'dev') {
-                        if (isUnix()) {
-                            sh '''
-                                docker compose down || true
-                                docker compose up -d --build
-                            '''
-                        } else {
-                            bat '''
-                                docker compose down
-                                docker compose up -d --build
-                            '''
-                        }
-                    } else {
-                        echo "For staging or production, customize this step to deploy via SSH, Kubernetes (kubectl), or other CD pipelines."
-                    }
-                }
-            }
-        }
     }
 
     post {
