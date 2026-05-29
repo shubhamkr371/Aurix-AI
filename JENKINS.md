@@ -17,7 +17,7 @@ Before setting up the pipeline in Jenkins, ensure that your Jenkins agent/server
 2. **System Dependencies**:
    - **Docker** and **Docker Compose** must be installed on the Jenkins agent machine.
    - The Jenkins user (`jenkins`) must have permissions to run Docker commands (e.g., added to the `docker` group on Linux).
-   - **Python 3.10+** (optional, used for local static code analysis linting. If not found, the pipeline continues gracefully).
+   - **Python 3.10+** (used for running code linting and the high-speed mock test suite).
 
 ---
 
