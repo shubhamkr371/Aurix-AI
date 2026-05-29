@@ -7,6 +7,7 @@ pipeline {
         DOCKER_IMAGE    = 'shubhamkr371docker/aurix-ai'
         IMAGE_TAG       = "${env.BUILD_NUMBER}"
         DOCKER_CRED_ID  = 'docker-hub-credentials'
+        PATH            = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
     }
 
     parameters {
