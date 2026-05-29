@@ -3,16 +3,13 @@ pipeline {
 
     environment {
         // Customize these variables according to your environment
-        DOCKER_REGISTRY = 'docker.io'
         DOCKER_IMAGE    = 'shubhamkr371docker/aurix-ai'
         IMAGE_TAG       = "${env.BUILD_NUMBER}"
-        DOCKER_CRED_ID  = 'docker-hub-credentials'
         PATH            = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
     }
 
     parameters {
         booleanParam(name: 'RUN_LINTER', defaultValue: true, description: 'Check to run flake8/bandit code checks')
-        booleanParam(name: 'PUSH_IMAGE', defaultValue: true, description: 'Check to push the built image to Docker Registry')
     }
 
     stages {
@@ -99,35 +96,6 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            when {
-                expression { return params.PUSH_IMAGE }
-            }
-            steps {
-                script {
-                    echo 'Pushing Docker image to registry...'
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CRED_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        if (isUnix()) {
-                            sh '''
-                                echo "$DOCKER_PASSWORD" | docker login "$DOCKER_REGISTRY" -u "$DOCKER_USER" --password-stdin
-                                docker tag ${DOCKER_IMAGE}:${IMAGE_TAG} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}
-                                docker tag ${DOCKER_IMAGE}:latest ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
-                                docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}
-                                docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:latest
-                            '''
-                        } else {
-                            bat '''
-                                echo %DOCKER_PASSWORD% | docker login %DOCKER_REGISTRY% -u %DOCKER_USER% --password-stdin
-                                docker tag %DOCKER_IMAGE%:%IMAGE_TAG% %DOCKER_REGISTRY%/%DOCKER_IMAGE%:%IMAGE_TAG%
-                                docker tag %DOCKER_IMAGE%:latest %DOCKER_REGISTRY%/%DOCKER_IMAGE%:latest
-                                docker push %DOCKER_REGISTRY%/%DOCKER_IMAGE%:%IMAGE_TAG%
-                                docker push %DOCKER_REGISTRY%/%DOCKER_IMAGE%:latest
-                            '''
-                        }
-                    }
-                }
-            }
-        }
 
     }
 
