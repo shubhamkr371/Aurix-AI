@@ -1,0 +1,18 @@
+# ── Dev / CI dependencies ─────────────────────────────────────────────────────
+# Lightweight: does NOT include torch, whisper, or other heavy ML packages.
+# Install with:  pip install -r requirements-dev.txt
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+pytest>=8.0.0
+pytest-cov>=5.0.0
+
+# ── Linting & Security ───────────────────────────────────────────────────────
+flake8>=7.0.0
+bandit>=1.7.0
+
+# ── App deps needed for tests (lightweight only) ─────────────────────────────
+flask>=3.0.0
+flask-cors>=4.0.0
+python-dotenv>=1.0.0
+requests>=2.32.0
+google-auth>=2.29.0

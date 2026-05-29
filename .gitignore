@@ -1,4 +1,5 @@
 .env
+.env.ci
 __pycache__/
 *.pyc
 uploads/
@@ -10,3 +11,13 @@ downloades/
 .vscode/
 .idea/
 cookies*
+
+# Virtual environments
+venv/
+.venv/
+
+# Testing & Coverage
+.pytest_cache/
+htmlcov/
+.coverage
+test-results.xml

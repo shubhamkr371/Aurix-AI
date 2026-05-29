@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     FLASK_APP=server.py \
     FLASK_RUN_HOST=0.0.0.0 \
-    FLASK_PORT=7860
+    FLASK_PORT=5000
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
@@ -34,8 +34,11 @@ COPY --chown=user . /app/
 # Ensure the upload and vector_db directories exist with correct permissions
 RUN mkdir -p /app/uploads /app/vector_db
 
-# Hugging Face uses port 7860
-EXPOSE 7860
+EXPOSE 5000
+
+# Health check for container orchestration
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/api/health')" || exit 1
 
 # Run the application
 CMD ["python", "server.py"]

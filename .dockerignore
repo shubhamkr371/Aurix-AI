@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+.github
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.pytest_cache
+.coverage
+htmlcov
+venv
+.venv
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Runtime data
+uploads/
+vector_db/
+downloads/
+
+# Media files
+*.wav
+*.mp3
+*.mp4
+
+# Docs & CI
+*.md
+Jenkinsfile
+docker-compose.yml
+cookies*
